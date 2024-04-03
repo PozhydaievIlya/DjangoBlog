@@ -6,7 +6,7 @@ from datetime import *
 from django.db.models import Q
 from django.utils.timezone import now
 from .forms import PostForm, UsersForm, CommentForm
-from .models import Post, Category, Tag, UsersEmail
+from .models import Post, Category, Tag, UsersEmail, Comments
 
 
 def get_categories():
@@ -60,7 +60,9 @@ def post(request, id=None):
         # Save the comment to the database
         comment.save()
         pass
-    context = {"post": post, "Uform": Uform, "comment": comment, "form": form}
+    # List of active comments for this article
+    comments = post.comments.all().order_by("-date")
+    context = {"post": post, "Uform": Uform, "comment": comment, "form": form, "comments": comments}
     context.update(get_categories())
     return render(request, 'blog/post.html', context)
 

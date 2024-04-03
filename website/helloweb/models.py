@@ -72,7 +72,7 @@ class Post(models.Model):
 
 
 class Comments(models.Model):
-    post = models.ForeignKey(Post,on_delete=models.CASCADE, verbose_name="Назва посту")
+    post = models.ForeignKey(Post,on_delete=models.CASCADE, verbose_name="Назва посту", related_name='comments')
     username = models.CharField(max_length=30, verbose_name="Username")
     body = models.CharField(max_length=500, verbose_name="Comment")
     date = models.DateTimeField(auto_now_add=True, verbose_name="Дата")
