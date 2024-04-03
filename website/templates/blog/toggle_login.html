@@ -1,0 +1,19 @@
+
+{% if user.is_authenticated %}
+<div class="navbar-form navbar-right">
+<a href="{% url 'blog_logout' %}" class="btn btn-danger">Logout</a>
+</div>
+<ul class="nav navbar-nav navbar-right">
+<li><a href="#">Hello, {{user}}!</a></li>
+</ul>
+{% else %}
+<form class="navbar-form navbar-right" method="POST" action="{% url 'blog_login' %}" role="form"> {% csrf_token %}
+<div class="form-group">
+<input type="text" placeholder="User" name="username" class="form-control">
+</div>
+<div class="form-group">
+<input type="password" placeholder="Password" name="password" class="form-control">
+</div>
+<button type="submit" class="btn btn-success">Log in</button>
+</form>
+{% endif %}

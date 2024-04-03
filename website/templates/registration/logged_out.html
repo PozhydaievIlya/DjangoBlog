@@ -1,0 +1,9 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<form method="post" action="{% url 'blog_logout' %}">
+    {% csrf_token %}
+    <a href="/" class="btn btn-danger"><b>To main page</b></a>
+    You have been successfully logged out. You can log-in again.
+
+</form>
+{% endblock %}
