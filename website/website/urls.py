@@ -22,7 +22,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("", include("helloweb.urls")),
     path('admin/', admin.site.urls),
-    path('gallery/', include("gallery.urls")),
 ]
 
 if settings.DEBUG:

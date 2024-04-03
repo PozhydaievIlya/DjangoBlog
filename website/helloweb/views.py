@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from datetime import *
 from django.db.models import Q
 from django.utils.timezone import now
-from .forms import PostForm, UsersForm, CommentForm
+from .forms import PostForm, UsersForm, CommentForm, ProfilePhotoForm
 from .models import Post, Category, Tag, UsersEmail, Comments
 
 
@@ -60,9 +60,11 @@ def post(request, id=None):
         # Save the comment to the database
         comment.save()
         pass
+    # upload profile pictures
+    photoForm = ProfilePhotoForm()
     # List of active comments for this article
     comments = post.comments.all().order_by("-date")
-    context = {"post": post, "Uform": Uform, "comment": comment, "form": form, "comments": comments}
+    context = {"post": post, "Uform": Uform, "comment": comment, "form": form, "comments": comments, "photoForm": photoForm}
     context.update(get_categories())
     return render(request, 'blog/post.html', context)
 
@@ -158,7 +160,7 @@ def create(request):
 
 def blog_logout(request):
     logout(request)
-    return redirect('index')
+    return redirect('/')
 
 
 def blog_login(request):
@@ -170,3 +172,17 @@ def blog_login(request):
         Uform = UsersForm()
     context = {"Uform": Uform}
     return render(request, 'registration/login.html', context)
+
+
+def profile(request):
+    if request.method == "POST":
+        photoForm = ProfilePhotoForm(request.POST, request.FILES)
+        if photoForm.is_valid():
+            prf = photoForm.save(commit=False)
+            prf.user = request.user
+            prf.save()
+            return redirect('/profile')
+
+    photoForm = ProfilePhotoForm()
+    context = {"photoForm": photoForm}
+    return render(request, 'blog/profile.html', context)

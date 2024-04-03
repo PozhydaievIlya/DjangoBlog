@@ -31,4 +31,5 @@ urlpatterns = [
     path("blog/create", views.create, name="create"),
     path("blog/login", LoginView.as_view(), name="blog_login"),
     path("blog/logout/", views.blog_logout, name="blog_logout"),
+    path("profile", views.profile, name="profile"),
 ]

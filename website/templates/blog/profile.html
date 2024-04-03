@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    {% load static %}
+    <title>Blog Home - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet" />
+{% load widget_tweaks %}
+    <!-- Custom CSS -->
+    <link href="{% static 'blog/css/blog-home.css' %}" rel="stylesheet" />
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--  [if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]  -->
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">IT Blog</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="{% url 'about' %}">About</a>
+            </li>
+            <li>
+              <a href="{% url 'contact' %}">Contact</a>
+            </li>
+
+            {% if user.is_authenticated %}
+              <li>
+                <a href="{% url 'create' %}">Create post</a>
+              </li>
+            {% endif %}
+          </ul>
+
+          {% include 'blog/toggle_login.html' %}
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <!------ Include the above in your HEAD tag ---------->
+<div class="container" style="">
+  <h1 class="page-header">{{user}} profile</h1>
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <div class="text-center">
+      <img src="{{ user.profile.image.url }}" class="avatar col-md-12" alt="avatar" style="margin-top: 5px">
+        <p style="margin-top: 5px"> Upload a different photo...</p>
+
+        <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data">
+          {% render_field photoForm.image  %}
+          {% csrf_token %}
+          <button type="submit" class="btn btn-regular">Submit</button>
+        </form>
+        </div>
+    </div>
+    <!-- edit form column -->
+    <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+      <h3>Personal info</h3>
+      <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label class="col-lg-3 control-label">First name:</label>
+          <div class="col-lg-8">
+            <input class="form-control" value="{{user.first_name}}" type="text">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Last name:</label>
+          <div class="col-lg-8">
+            <input class="form-control" value="{{user.last_name}}" type="text">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Email:</label>
+          <div class="col-lg-8">
+            <input class="form-control" value="{{user.email}}" type="text">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Time Zone:</label>
+          <div class="col-lg-8">
+            <div class="ui-select">
+              <select id="user_time_zone" class="form-control">
+                <option value="Hawaii">(GMT-10:00) Hawaii</option>
+                <option value="Alaska">(GMT-09:00) Alaska</option>
+                <option value="Pacific Time (US & Canada)">(GMT-08:00) Pacific Time (US & Canada)</option>
+                <option value="Arizona">(GMT-07:00) Arizona</option>
+                <option value="Mountain Time (US & Canada)">(GMT-07:00) Mountain Time (US & Canada)</option>
+                <option value="Central Time (US & Canada)" selected="selected">(GMT-06:00) Central Time (US & Canada)</option>
+                <option value="Eastern Time (US & Canada)">(GMT-05:00) Eastern Time (US & Canada)</option>
+                <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Username:</label>
+          <div class="col-md-8">
+            <input class="form-control" value="{{user}}" type="text">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Password:</label>
+          <div class="col-md-8">
+            <input class="form-control" value="11111" type="password">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Confirm password:</label>
+          <div class="col-md-8">
+            <input class="form-control" value="11111" type="password">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-8">
+            <input class="btn btn-primary" value="Save Changes" type="button">
+            <span></span>
+            <input class="btn btn-default" value="Cancel" type="reset">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+    <br> <br> <br> <br> <br>
+    <hr />
+    <footer class="bg-white">
+      <div class="container py-5">
+        <div class="row py-4">
+          <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+            <img src="img/logo.png" alt="" width="180" class="mb-3" />
+            <p class="font-italic text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+            <ul class="list-inline mt-4">
+              <li class="list-inline-item">
+                <a href="#" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#" target="_blank" title="facebook"><i class="fa fa-facebook"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#" target="_blank" title="instagram"><i class="fa fa-instagram"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#" target="_blank" title="pinterest"><i class="fa fa-pinterest"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#" target="_blank" title="vimeo"><i class="fa fa-vimeo"></i></a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+            <h6 class="text-uppercase font-weight-bold mb-4">Info</h6>
+            <ul class="list-unstyled mb-0">
+              <li class="mb-2">
+                <a href="#" class="text-muted">About</a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-muted">Contact</a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-muted">Create new post</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-lg-0">
+            <h6 class="text-uppercase font-weight-bold mb-4">Newsletter</h6>
+            <p class="text-muted mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At itaque temporibus.</p>
+            <div class="p-1 rounded border">
+              <div class="form-horizontal">
+                <div class="input-group mb-3">
+                  <form method="POST" style="display: inline">
+                    {% csrf_token %}Contact us! {{ Uform.user_email }}
+                    <button type="submit" style="margin-top: 4px" class="btn">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyrights -->
+      <div class="bg-light py-4">
+        <div class="container text-center">
+          <p class="text-muted mb-0 py-2">© 2024 Bootstrapious All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="{% static 'blog/js/jquery.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

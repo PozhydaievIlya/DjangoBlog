@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, UsersEmail, Comments
+from .models import Post, UsersEmail, Comments, Profile
 
 
 class PostForm(forms.ModelForm):
@@ -25,6 +25,11 @@ class CommentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({'class': 'form-control'})
+
+class ProfilePhotoForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['image',]
 
 
 

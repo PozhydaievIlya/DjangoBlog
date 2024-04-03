@@ -72,7 +72,7 @@ class Post(models.Model):
 
 
 class Comments(models.Model):
-    post = models.ForeignKey(Post,on_delete=models.CASCADE, verbose_name="Назва посту", related_name='comments')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name="Назва посту", related_name='comments')
     username = models.CharField(max_length=30, verbose_name="Username")
     body = models.CharField(max_length=500, verbose_name="Comment")
     date = models.DateTimeField(auto_now_add=True, verbose_name="Дата")
@@ -85,3 +85,11 @@ class Comments(models.Model):
         verbose_name = "Коментар"
         verbose_name_plural = "Коментари"
 
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg',
+                              upload_to='profile_pics')
+
+    def __str__(self):
+        return f'{self.user.username} Profile'

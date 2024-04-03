@@ -4,7 +4,7 @@
 <a href="{% url 'blog_logout' %}" class="btn btn-danger">Logout</a>
 </div>
 <ul class="nav navbar-nav navbar-right">
-<li><a href="#">Hello, {{user}}!</a></li>
+<li><a href="/profile">Hello, {{user}}!</a></li>
 </ul>
 {% else %}
 <form class="navbar-form navbar-right" method="POST" action="{% url 'blog_login' %}" role="form"> {% csrf_token %}
