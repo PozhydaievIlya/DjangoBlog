@@ -1,0 +1,10 @@
+{% extends "blog/base.html"%}
+{% block content%}
+  <h1>Create new post</h1>
+    <form action="{% url 'create' %}" method="post">
+    {% csrf_token %}
+        {{ form}}
+        <input type="submit", value="save", class="btn btn-default">
+    </form>
+
+{% endblock %}
