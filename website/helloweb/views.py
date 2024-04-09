@@ -1,14 +1,13 @@
 from django.contrib.auth import logout, authenticate, login
-from django.contrib.auth.decorators import login_required
 from django.core.checks import messages
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
-from datetime import *
 from django.db.models import Q
 from django.utils.timezone import now
-from .forms import PostForm, UsersForm, CommentForm, ProfilePhotoForm, RegistrationForm
+from .forms import PostForm, UsersForm, CommentForm, ProfilePhotoForm, RegistrationForm, UserUpdateForm
 from .models import Post, Category, Tag, UsersEmail, Comments, Profile
 from django.contrib.auth.models import User
+from django.contrib.messages import constants as messages
+
 
 def get_categories():
     category = Category.objects.all()
@@ -65,7 +64,8 @@ def post(request, id=None):
     photoForm = ProfilePhotoForm()
     # List of active comments for this article
     comments = post.comments.all().order_by("-date")
-    context = {"post": post, "Uform": Uform, "comment": comment, "form": form, "comments": comments, "photoForm": photoForm}
+    context = {"post": post, "Uform": Uform, "comment": comment, "form": form, "comments": comments,
+               "photoForm": photoForm}
     context.update(get_categories())
     return render(request, 'blog/post.html', context)
 
@@ -209,5 +209,32 @@ def registration(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('index')
-    context = {"form": form}
+    Uform = UsersForm(request.POST)
+    if Uform.is_valid():
+        Uform.save()
+    else:
+        Uform = UsersForm()
+    context = {"form": form, "Uform": Uform, }
     return render(request, 'blog/registration.html', context)
+
+
+def profile_update(request):
+    # User form for email
+    Uform = UsersForm(request.POST)
+    if Uform.is_valid():
+        Uform.save()
+    else:
+        Uform = UsersForm()
+    # Update form
+    if request.user.is_authenticated:
+        current_user = User.objects.get(id=request.user.id)
+        UpdateForm = UserUpdateForm(request.POST or None, instance=current_user)
+        if UpdateForm.is_valid():
+            UpdateForm.save()
+            login(request, current_user)
+            return redirect(f'/profile/{request.user.id}')
+        context = {"UpdateForm": UpdateForm, "Uform": Uform}
+        return render(request, 'blog/profile_update.html', context)
+    else:
+        messages.SUCCESS(request, "You must be logged in")
+        return redirect('index')

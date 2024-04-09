@@ -33,4 +33,5 @@ urlpatterns = [
     path("blog/logout/", views.blog_logout, name="blog_logout"),
     path("profile/<int:pk>", views.profile, name="profile"),
     path("blog/registration/", views.registration, name="registration"),
+    path("blog/profile_update", views.profile_update, name="profile_update"),
 ]
